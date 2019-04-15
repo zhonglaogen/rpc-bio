@@ -10,6 +10,9 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>netty1</module>
+        <module>netty2</module>
+        <module>netty3</module>
+        <module>netty4</module>
     </modules>
 
 

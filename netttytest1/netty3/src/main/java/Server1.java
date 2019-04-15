@@ -1,10 +1,17 @@
 import io.netty.bootstrap.ServerBootstrap;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.sctp.nio.NioSctpServerChannel;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.handler.codec.DelimiterBasedFrameDecoder;
+import io.netty.handler.codec.FixedLengthFrameDecoder;
+import io.netty.handler.codec.string.StringDecoder;
+
+import java.nio.charset.Charset;
 
 
 public class Server1 {
@@ -41,7 +48,7 @@ public class Server1 {
      * @param acceptorHandlers 处理器，如何处理客户端请求
      * @return
      */
-    public ChannelFuture doAccept(int port, final ChannelHandler... acceptorHandlers) throws InterruptedException {
+    public ChannelFuture doAccept(int port) throws InterruptedException {
         /**
          * childHandler是服务的bootstarp独有的方法，是用于提供处理对象的
          * 可以一次性增加若干处理逻辑。是类似责任链模式的处理方式
@@ -56,6 +63,14 @@ public class Server1 {
         bootstrap.childHandler(new ChannelInitializer<SocketChannel>() {
             @Override
             protected void initChannel(SocketChannel socketChannel) throws Exception {
+                //数据分隔符，定义的数据分隔符一定是一个bytebuff类型的数据对象
+                ByteBuf delimiter= Unpooled.copiedBuffer("$E$".getBytes());
+                ChannelHandler[] acceptorHandlers=new ChannelHandler[3];
+                //使用特殊符号分隔处理数据粘包问题，也要定义每个数据包最大长度，netty建议数据有最大长度
+                acceptorHandlers[0]=new DelimiterBasedFrameDecoder(1024,delimiter);
+                //字符串解码器Handler，会自动处理ChannelRead方法的msg参数，将byteBuf类型的数据转换为字符串
+                acceptorHandlers[1]=new StringDecoder(Charset.forName("utf-8"));
+                acceptorHandlers[2]=new Server1Hander();
                 socketChannel.pipeline().addLast(acceptorHandlers);
             }
         });
@@ -81,7 +96,7 @@ public class Server1 {
         Server1 server1=null;
         try {
             server1=new Server1();
-            future=server1.doAccept(55555,new Server1Hander());
+            future=server1.doAccept(55555);
             System.out.println("server started");
             //关闭连接的
             future.channel().closeFuture().sync();

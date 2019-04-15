@@ -7,6 +7,9 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="netty1" />
+        <module name="netty2" />
+        <module name="netty3" />
+        <module name="netty4" />
       </profile>
     </annotationProcessing>
   </component>

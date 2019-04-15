@@ -1,5 +1,3 @@
-package Client1Handler;
-
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -9,10 +7,8 @@ public class Client1Handler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         try{
-            ByteBuf readbuf= (ByteBuf) msg;
-            byte[] temDatas=new byte[readbuf.readableBytes()];
-            readbuf.readBytes(temDatas);
-            System.out.println("from server:"+new String(temDatas,"utf-8"));
+           String message= (String) msg;
+            System.out.println("from server:"+message);
         }finally {
             //用于释放缓存，避免内存溢出
             ReferenceCountUtil.release(msg);

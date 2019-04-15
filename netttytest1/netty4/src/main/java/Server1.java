@@ -1,10 +1,17 @@
 import io.netty.bootstrap.ServerBootstrap;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.sctp.nio.NioSctpServerChannel;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.handler.codec.DelimiterBasedFrameDecoder;
+import io.netty.handler.codec.FixedLengthFrameDecoder;
+import io.netty.handler.codec.string.StringDecoder;
+
+import java.nio.charset.Charset;
 
 
 public class Server1 {
@@ -41,7 +48,7 @@ public class Server1 {
      * @param acceptorHandlers 处理器，如何处理客户端请求
      * @return
      */
-    public ChannelFuture doAccept(int port, final ChannelHandler... acceptorHandlers) throws InterruptedException {
+    public ChannelFuture doAccept(int port,final ChannelHandler...channelHandlers) throws InterruptedException {
         /**
          * childHandler是服务的bootstarp独有的方法，是用于提供处理对象的
          * 可以一次性增加若干处理逻辑。是类似责任链模式的处理方式
@@ -56,7 +63,8 @@ public class Server1 {
         bootstrap.childHandler(new ChannelInitializer<SocketChannel>() {
             @Override
             protected void initChannel(SocketChannel socketChannel) throws Exception {
-                socketChannel.pipeline().addLast(acceptorHandlers);
+                socketChannel.pipeline().addLast(new StringDecoder(Charset.forName("utf-8")));
+                socketChannel.pipeline().addLast(channelHandlers);
             }
         });
         //bind方法--绑定坚挺端口的，serverBootStarp可以绑定多个监听端口
