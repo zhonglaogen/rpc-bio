@@ -13,6 +13,9 @@
         <module>netty2</module>
         <module>netty3</module>
         <module>netty4</module>
+        <module>netty5</module>
+        <module>netty6</module>
+        <module>netty6</module>
     </modules>
 
 
@@ -21,14 +24,27 @@
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-all</artifactId>
-            <version>4.1.30.Final</version>
+            <version>5.0.0.Alpha2</version>
         </dependency>
+
 
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-collections4</artifactId>
             <version>4.0</version>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/io.netty/netty-codec -->
+        <!-- https://mvnrepository.com/artifact/io.netty/netty-codec -->
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-codec</artifactId>
+            <version>5.0.0.Alpha2</version>
+        </dependency>
+
+
+
+
 
     </dependencies>
 

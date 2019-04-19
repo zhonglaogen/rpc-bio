@@ -10,6 +10,8 @@
         <module name="netty2" />
         <module name="netty3" />
         <module name="netty4" />
+        <module name="netty5" />
+        <module name="netty6" />
       </profile>
     </annotationProcessing>
   </component>
