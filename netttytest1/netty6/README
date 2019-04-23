@@ -1,3 +1,12 @@
+模拟断线重连，当在自定义时间内没有可读或可写数据时自动断开连接，
+再次获取Channel应该
+ if(future==null){
+            future=this.bootstrap.connect(host,port).sync();
+        }
+        if(!future.channel().isActive()){
+            future=this.bootstrap.connect(host,port).sync();
+        }
+        return future;
 bug:
 1客户端无法接受消息 -----》》》未使用压缩类传输对象，导致解压缩异常,serverhandler执行一半异常
 2服务端只能接受一下消息-----》》》同上

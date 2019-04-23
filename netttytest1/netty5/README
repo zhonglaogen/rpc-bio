@@ -1,1 +1,2 @@
+通过marshalling框架传输对象，以及利用jdk自带的GZIPOutputStreamapi压缩和解压数据
 bug：对象无法传输----》》》serial包的scope的范围是test
