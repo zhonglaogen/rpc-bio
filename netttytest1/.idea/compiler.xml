@@ -10,8 +10,14 @@
         <module name="netty2" />
         <module name="netty3" />
         <module name="netty4" />
-        <module name="netty5" />
         <module name="netty6" />
+        <module name="webchatroom" />
+      </profile>
+      <profile name="Annotation profile for netttytest1" enabled="true">
+        <sourceOutputDir name="../netty6/target/generated-sources/annotations" />
+        <sourceTestOutputDir name="../netty6/target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="netty5" />
       </profile>
     </annotationProcessing>
   </component>

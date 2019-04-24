@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <form action="" onsubmit="return false">
+        <H3>多人聊天室</H3>
+        <textarea id="msgText" cols="50" rows="20">
+
+
+        </textarea><br>
+        <input type="text" name="msg" style="width: 300px">
+        <input type="button" value="发送" onclick="send(this.form.msg.value)">
+        <input type="button" value="清空">
+
+    </form>
+
+</body>
+<script>
+    var socket;
+    if(!window.WebSocket){
+        window.WebSocket=Window.MozWebSocket;
+    }
+
+    if(window.WebSocket){
+        socket=new WebSocket("ws://localhost:55555/chat")
+        //消息传入
+        socket.onmessage=function (ev) {
+            var ta=document.getElementById("msgText");
+            ta.value=ta.value+"\n"+ev.data;
+        }
+        socket.onopen=function (ev) {
+            var ta=document.getElementById("msgText");
+            ta.value="连上服务器";
+        }
+        socket.onclose=function (ev) {
+            var ta=document.getElementById("msgText");
+            ta.value=ta.value+"\n"+"退出服务器";
+        }
+    }
+
+    function send(msg) {
+        if(!window.WebSocket){
+            return false;
+        }
+        if(socket.readyState==WebSocket.OPEN){
+            socket.send(msg);
+        }else {
+            alert("连接没有建立");
+        }
+    }
+
+</script>
+</html>
