@@ -39,7 +39,7 @@ public class HttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequ
 
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, FullHttpRequest request) throws Exception {
-
+        String uri = request.getUri();
         if(request.getUri().equals(chatUri)){
             System.out.println("请求是wevsocket请求");
             channelHandlerContext.fireChannelRead(request.retain());//如果是websocket请求，则转到下一道供需处理

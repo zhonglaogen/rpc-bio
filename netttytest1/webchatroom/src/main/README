@@ -1,0 +1,15 @@
+用netty实现多人聊天,
+HttpServerCodec将消息改为http请求
+ChunkedWriteHandler负责向客户端发送html的页面文件
+HttpRequestHandler处理页面请求，如果请求是websocket调用fireChannelRead,使用下一个handler处理
+WebSocketServerProtocolHandler("/chat")处理welsocket协议,接收websocket的消息
+TextWebsocketHandler将websocket消息转发的逻辑（）<TextWebSocketFrame>websocket消息格式
+
+SimpleChannelInboundHandler要写泛型,根据不同的消息类型选择不同的handler
+
+ChannelRead方法根据第二个参数能否强转，选择是否使用此方法
+
+http请求request会请求两次
+1.http请求/
+2.（Google）http请求Favicon.ico图标，火狐没有这个图标，不会请求
+3.websocket请求（在html的一段js代码中请求的）

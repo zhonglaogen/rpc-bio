@@ -18,39 +18,39 @@
     </form>
 
 </body>
-<script>
-    var socket;
-    if(!window.WebSocket){
-        window.WebSocket=Window.MozWebSocket;
-    }
+<!--<script>-->
+    <!--var socket;-->
+    <!--if(!window.WebSocket){-->
+        <!--window.WebSocket=Window.MozWebSocket;-->
+    <!--}-->
 
-    if(window.WebSocket){
-        socket=new WebSocket("ws://localhost:55555/chat")
-        //消息传入
-        socket.onmessage=function (ev) {
-            var ta=document.getElementById("msgText");
-            ta.value=ta.value+"\n"+ev.data;
-        }
-        socket.onopen=function (ev) {
-            var ta=document.getElementById("msgText");
-            ta.value="连上服务器";
-        }
-        socket.onclose=function (ev) {
-            var ta=document.getElementById("msgText");
-            ta.value=ta.value+"\n"+"退出服务器";
-        }
-    }
+    <!--if(window.WebSocket){-->
+        <!--socket=new WebSocket("ws://localhost:55555/chat")-->
+        <!--//消息传入-->
+        <!--socket.onmessage=function (ev) {-->
+            <!--var ta=document.getElementById("msgText");-->
+            <!--ta.value=ta.value+"\n"+ev.data;-->
+        <!--}-->
+        <!--socket.onopen=function (ev) {-->
+            <!--var ta=document.getElementById("msgText");-->
+            <!--ta.value="连接服务起";-->
+        <!--}-->
+        <!--socket.onclose=function (ev) {-->
+            <!--var ta=document.getElementById("msgText");-->
+            <!--ta.value=ta.value+"\n"+"退出服务器";-->
+        <!--}-->
+    <!--}-->
 
-    function send(msg) {
-        if(!window.WebSocket){
-            return false;
-        }
-        if(socket.readyState==WebSocket.OPEN){
-            socket.send(msg);
-        }else {
-            alert("连接没有建立");
-        }
-    }
+    <!--function send(msg) {-->
+        <!--if(!window.WebSocket){-->
+            <!--return false;-->
+        <!--}-->
+        <!--if(socket.readyState==WebSocket.OPEN){-->
+            <!--socket.send(msg);-->
+        <!--}else {-->
+            <!--alert("连接没有建立");-->
+        <!--}-->
+    <!--}-->
 
-</script>
+<!--</script>-->
 </html>
