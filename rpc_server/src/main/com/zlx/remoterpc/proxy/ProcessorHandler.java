@@ -19,6 +19,7 @@ public class ProcessorHandler implements Runnable {
     public ProcessorHandler(Socket socket, Object service) {
         this.socket = socket;
         this.service = service;
+
     }
 
     public ProcessorHandler() {
@@ -76,8 +77,9 @@ public class ProcessorHandler implements Runnable {
             types[i]=args[i].getClass();
         }
         try {
+            //根据,方法名和参数类型,得到service的方法
             Method method=service.getClass().getMethod(rpcRequest.getMethodName(),types);
-            //调用service相应的方法
+            //根据对象和参数值，调用service相应的方法
             Object result = method.invoke(service, args);
             return result;
         } catch (NoSuchMethodException e) {

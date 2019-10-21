@@ -12,7 +12,7 @@ public class   Client1Handler extends ChannelInboundHandlerAdapter {
             readbuf.readBytes(temDatas);
             System.out.println("from server:"+new String(temDatas,"utf-8"));
         }finally {
-            //用于释放缓存，避免内存溢出
+            //用于释放缓存，避免内存溢出(直接内存)
             ReferenceCountUtil.release(msg);
         }
 

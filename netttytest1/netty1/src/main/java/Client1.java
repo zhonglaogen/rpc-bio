@@ -70,6 +70,7 @@ public class Client1 {
         }finally {
             if(null!=future){
                 try {
+                    //阻塞当前进程，监听到连接断开，继续执行
                     future.channel().closeFuture().sync();
                 } catch (InterruptedException e) {
                     e.printStackTrace();

@@ -68,8 +68,10 @@ public class Client1 {
                 s=new Scanner(System.in);
                 System.out.print("enter message send to server: ");
                 String line=s.nextLine();
+//                String line="hello";
                 future.channel().writeAndFlush(Unpooled.copiedBuffer(line.getBytes("utf-8")));
                 TimeUnit.SECONDS.sleep(1);
+
             }
         } catch (Exception e) {
             e.printStackTrace();

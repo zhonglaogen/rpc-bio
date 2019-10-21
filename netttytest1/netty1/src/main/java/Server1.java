@@ -6,6 +6,8 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 
+import java.util.concurrent.TimeUnit;
+
 
 public class Server1 {
 
@@ -62,6 +64,7 @@ public class Server1 {
         //bind方法--绑定坚挺端口的，serverBootStarp可以绑定多个监听端口
         //sync开始监听逻辑，返回一个ChannelFuture，返回结果代表的是监听成功后的一个对应的未来结果
         //可以使用ChannelFuture实现后续的服务器和客户端的交互
+        //属于服务端和port端口和server形成的Channel，服务器套接字的Channel
         ChannelFuture future=bootstrap.bind(port).sync();
         return future;
 
@@ -75,23 +78,33 @@ public class Server1 {
         this.acceptorGroup.shutdownGracefully();
         this.clientGroup.shutdownGracefully();
     }
-
+    public void stopServer(ChannelFuture future){
+        future.channel().close();
+    }
+    //这个Channel是server连接到ip和端口号的serversocket，注册到了bossworker，一旦这个ctx关闭，服务器就关闭
+   static ChannelFuture future=null;
     public static void main(String[] args) {
-        ChannelFuture future=null;
         Server1 server1=null;
         try {
             server1=new Server1();
-            future=server1.doAccept(55555,new Server1Hander());
+             future=server1.doAccept(55555,new Server1Hander());
             System.out.println("server started");
-            //关闭连接的
+            //关闭连接的， 阻塞当前进程，监听到连接断开，继续执行
+            new Thread(()->{
+                try{ TimeUnit.SECONDS.sleep(5);}catch(InterruptedException e){ e.printStackTrace();}
+                     future.channel().close();  
+                   },"关闭").start();
+            //主线程到这里就 wait 子线程退出了，子线程才是真正监听和接受请求的。
+            //绑定端口后,后面future.channel().closeFuture().sync();其实是有执行的,不过线程变为wait状态了
             future.channel().closeFuture().sync();
+            System.out.println("继续");
         } catch (InterruptedException e) {
             e.printStackTrace();
         }finally {
             if(null !=future){
                 try {
-                    future.channel().closeFuture().sync();
-                } catch (InterruptedException e) {
+//                    future.channel().closeFuture().sync();
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }

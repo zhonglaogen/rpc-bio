@@ -17,6 +17,7 @@
         <module>netty6</module>
         <module>netty6</module>
         <module>webchatroom</module>
+        <module>netty6</module>
     </modules>
 
 
